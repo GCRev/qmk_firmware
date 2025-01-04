@@ -3,7 +3,7 @@
     "keyboard_name": "gh_multisteno",
     "maintainer": "GCRev",
     "bootloader": "stm32duino",
-    "diode_direction": "ROW2COL",
+    "diode_direction": "COL2ROW",
     "features": {
         "bootmagic": true,
         "command": false,
@@ -13,8 +13,8 @@
         "nkro": true
     },
     "matrix_pins": {
-        "cols": ["A4", "A5", "A6", "A7", "B0", "B1", "B2", "B10"],
-        "rows": ["B4", "B5", "B6", "B7"]
+        "cols": ["B0", "A7", "A6", "A5", "A4", "A3", "B1", "B2", "B10", "B11", "B12", "B13"],
+        "rows": ["A15", "B4", "B7", "B6", "B5"]
     },
     "processor": "STM32F103",
     "url": "",
@@ -34,6 +34,10 @@
                 {"matrix": [0, 5], "x": 5, "y": 0},
                 {"matrix": [0, 6], "x": 6, "y": 0},
                 {"matrix": [0, 7], "x": 7, "y": 0},
+                {"matrix": [0, 8], "x": 8, "y": 0},
+                {"matrix": [0, 9], "x": 9, "y": 0},
+                {"matrix": [0, 10], "x": 10, "y": 0},
+                {"matrix": [0, 11], "x": 11, "y": 0},
                 {"matrix": [1, 0], "x": 0, "y": 1},
                 {"matrix": [1, 1], "x": 1, "y": 1},
                 {"matrix": [1, 2], "x": 2, "y": 1},
@@ -42,6 +46,10 @@
                 {"matrix": [1, 5], "x": 5, "y": 1},
                 {"matrix": [1, 6], "x": 6, "y": 1},
                 {"matrix": [1, 7], "x": 7, "y": 1},
+                {"matrix": [1, 8], "x": 8, "y": 1},
+                {"matrix": [1, 9], "x": 9, "y": 1},
+                {"matrix": [1, 10], "x": 10, "y": 1},
+                {"matrix": [1, 11], "x": 11, "y": 1},
                 {"matrix": [2, 0], "x": 0, "y": 2},
                 {"matrix": [2, 1], "x": 1, "y": 2},
                 {"matrix": [2, 2], "x": 2, "y": 2},
@@ -50,6 +58,10 @@
                 {"matrix": [2, 5], "x": 5, "y": 2},
                 {"matrix": [2, 6], "x": 6, "y": 2},
                 {"matrix": [2, 7], "x": 7, "y": 2},
+                {"matrix": [2, 8], "x": 8, "y": 2},
+                {"matrix": [2, 9], "x": 9, "y": 2},
+                {"matrix": [2, 10], "x": 10, "y": 2},
+                {"matrix": [2, 11], "x": 11, "y": 2},
                 {"matrix": [3, 0], "x": 0, "y": 3},
                 {"matrix": [3, 1], "x": 1, "y": 3},
                 {"matrix": [3, 2], "x": 2, "y": 3},
@@ -57,7 +69,17 @@
                 {"matrix": [3, 4], "x": 4, "y": 3},
                 {"matrix": [3, 5], "x": 5, "y": 3},
                 {"matrix": [3, 6], "x": 6, "y": 3},
-                {"matrix": [3, 7], "x": 7, "y": 3}
+                {"matrix": [3, 7], "x": 7, "y": 3},
+                {"matrix": [3, 8], "x": 8, "y": 3},
+                {"matrix": [3, 9], "x": 9, "y": 3},
+                {"matrix": [3, 10], "x": 10, "y": 3},
+                {"matrix": [3, 11], "x": 11, "y": 3},
+                {"matrix": [4, 3], "x": 3, "y": 4},
+                {"matrix": [4, 4], "x": 4, "y": 4},
+                {"matrix": [4, 5], "x": 5, "y": 4},
+                {"matrix": [4, 6], "x": 6, "y": 4},
+                {"matrix": [4, 7], "x": 7, "y": 4},
+                {"matrix": [4, 8], "x": 8, "y": 4}
             ]
         }
     }
