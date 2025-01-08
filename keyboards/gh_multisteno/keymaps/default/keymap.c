@@ -13,7 +13,14 @@ enum Layer {
 };
 
 enum custom_keycodes {
-    STN_ESC = SAFE_RANGE
+    STN_ESC = SAFE_RANGE,
+    MO_FUN
+};
+
+// left-handed space combo
+const uint16_t PROGMEM lh_space_combo[] = { MO_FUN, KC_LSFT, COMBO_END };
+combo_t key_combos[] = {
+    COMBO(lh_space_combo, KC_SPC)
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -27,7 +34,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
      * │STN│ Z │ X │ C │ V │ B │ N │ M │ , │ . │ ? │ENT│
      * └───┴───┴───┼───┼───┼───┼───┼───┼───┼───┴───┴───┘
-     *             │ALT│FUN│SFT│SPA│SYM│WIN│
+     *             │ALT│FUN│SFT│SPC│SYM│WIN│
      *             └───┴───┴───┴───┴───┴───┘
      */
     [_BASE] = LAYOUT(
@@ -35,7 +42,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_GRV,     KC_Q,    KC_W,     KC_E,    KC_R,     KC_T,    KC_Y,   KC_U,     KC_I,    KC_O,   KC_P,    KC_BSLS,
         KC_LCTL,    KC_A,    KC_S,     KC_D,    KC_F,     KC_G,    KC_H,   KC_J,     KC_K,    KC_L,   KC_SCLN, KC_QUOT,
         TO(_STENO), KC_Z,    KC_X,     KC_C,    KC_V,     KC_B,    KC_N,   KC_M,     KC_COMM, KC_DOT, KC_SLSH, KC_ENT,
-                                       KC_LALT, MO(_FUN), KC_LSFT, KC_SPC, MO(_SYM), KC_LWIN
+                                       KC_LALT, MO_FUN,   KC_LSFT, KC_SPC, MO(_SYM), KC_LWIN
     ),
 
     /* _STENO
@@ -69,7 +76,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
      * │   │   │   │   │   │BRK│   │   │   │   │   │   │
      * └───┴───┴───┼───┼───┼───┼───┼───┼───┼───┴───┴───┘
-     *             │   │   │   │   │   │   │
+     *             │   │   │SPC│   │   │   │
      *             └───┴───┴───┴───┴───┴───┘
      */
     [_FUN] = LAYOUT(
@@ -77,7 +84,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_TAB,  _______, KC_UP,   _______, _______, _______, _______, KC_DEL,  KC_INS,  _______, KC_PSCR, _______,
         _______, KC_LEFT, KC_DOWN, KC_RGHT, _______, _______, KC_HOME, KC_PGDN, KC_PGUP, KC_END,  _______, _______,
         _______, _______, _______, KC_CAPS, _______, KC_BRK,  _______, _______, _______, _______, _______, _______,
-                                   _______, _______, _______, _______, _______, _______
+                                   _______, _______, KC_SPC,  _______, _______, _______
     ),
 
     /* _SYM
@@ -106,24 +113,26 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     switch(get_highest_layer(state)) {
     case _STENO:
         // poorple
-        pwmEnableChannel(&PWMD2, 1, PWM_PERCENTAGE_TO_WIDTH(&PWMD2, 2500));
-        pwmEnableChannel(&PWMD2, 2, PWM_PERCENTAGE_TO_WIDTH(&PWMD2, 0));
-        pwmEnableChannel(&PWMD2, 0, PWM_PERCENTAGE_TO_WIDTH(&PWMD2, 4000));
+        set_r(2500);
+        set_g(0);
+        set_b(4000);
         break;
     case _FUN:
         // yellow 
-        pwmEnableChannel(&PWMD2, 1, PWM_PERCENTAGE_TO_WIDTH(&PWMD2, 4000));
-        pwmEnableChannel(&PWMD2, 2, PWM_PERCENTAGE_TO_WIDTH(&PWMD2, 1200));
-        pwmEnableChannel(&PWMD2, 0, PWM_PERCENTAGE_TO_WIDTH(&PWMD2, 0));
+        set_r(4000);
+        set_g(1200);
+        set_b(0);
         break;
     case _SYM:
         // cyan
-        pwmEnableChannel(&PWMD2, 1, PWM_PERCENTAGE_TO_WIDTH(&PWMD2, 0));
-        pwmEnableChannel(&PWMD2, 2, PWM_PERCENTAGE_TO_WIDTH(&PWMD2, 1200));
-        pwmEnableChannel(&PWMD2, 0, PWM_PERCENTAGE_TO_WIDTH(&PWMD2, 4000));
+        set_r(0);
+        set_g(1200);
+        set_b(4000);
         break;
     default:
-        default_led();
+        set_r(200);
+        set_g(150);
+        set_b(200);
         break;
     }
     
@@ -139,6 +148,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             layer_move(_BASE);
         }
         return false;
+    case MO_FUN:
+        if (record->event.pressed) {
+            layer_on(_FUN);
+        } else {
+            layer_off(_FUN);
+        }
     default:
         return true;
     }

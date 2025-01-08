@@ -44,13 +44,13 @@ bool matrix_scan_custom(matrix_row_t current_matrix[]) {
     for (uint8_t rowInd = 0; rowInd < MATRIX_ROWS; rowInd++) {
         palClearLine(row_pins[rowInd]);
 
-        wait_us(10);
+        wait_us(5);
 
         changed |= read_cols(rowInd, current_matrix);
         
         palSetLine(row_pins[rowInd]);
 
-        wait_us(10);
+        wait_us(5);
     }
 
     return changed;
