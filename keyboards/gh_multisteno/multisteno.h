@@ -38,3 +38,5 @@ void set_b(uint16_t b);
 void default_led(void);
 
 void disable_led(void);
+
+bool led_step(void);

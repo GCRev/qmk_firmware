@@ -1,6 +1,7 @@
 #include "quantum.h"
 #include "multisteno.h"
 #include "timer.h"
+#include "wait.h"
 #include <hal.h>
 #include <usb_device_state.h>
 
@@ -71,17 +72,27 @@ void disable_led() {
     pwmDisableChannel(&PWMD2, 0);
 }
 
+bool led_step(void) {
+    bool has_diff = false;
+    for(uint8_t i = 0; i < 3; i++) {
+        int16_t diff = rgb_target[i] - rgb_current[i];
+        diff = diff * 0.6;
+        rgb_current[i] = rgb_target[i] - diff;
+        PWMD2.tim->CCR[rgb_channel[i]] = PWM_PERCENTAGE_TO_WIDTH(&PWMD2, rgb_current[i]);
+        if (diff > 1) {
+            has_diff = true;
+        }
+    }
+    
+    return has_diff;
+}
+
 // this runs every tick, so use this over led_upate_*
 void housekeeping_task_kb(void) {
     static uint32_t previous = 0;
     if (timer_elapsed32(previous) > 16) { // Throttle to 60fps
         previous = timer_read32();
-        for(uint8_t i = 0; i < 3; i++) {
-            int16_t diff = rgb_target[i] - rgb_current[i];
-            diff = diff * 0.6;
-            rgb_current[i] = rgb_target[i] - diff;
-            PWMD2.tim->CCR[rgb_channel[i]] = PWM_PERCENTAGE_TO_WIDTH(&PWMD2, rgb_current[i]);
-        }
+        led_step();
     }
 }
 
