@@ -45,19 +45,22 @@ void keyboard_post_init_kb(void){
 }
 
 void set_r(uint16_t r) {
-    rgb_target[0] = 10000 < r ? 10000 : r;
+    const uint16_t val = r * BRIGHTNESS;
+    rgb_target[0] = 10000 < val ? 10000 : val;
 }
 void set_g(uint16_t g) {
-    rgb_target[1] = 10000 < g ? 10000 : g;
+    const uint16_t val = g * BRIGHTNESS;
+    rgb_target[1] = 10000 < val ? 10000 : val;
 }
 void set_b(uint16_t b) {
-    rgb_target[2] = 10000 < b ? 10000 : b;
+    const uint16_t val = b * BRIGHTNESS;
+    rgb_target[2] = 10000 < val ? 10000 : val;
 }
 
 void default_led() {
-    set_r(200);
-    set_g(150);
-    set_b(200);
+    set_r(200 * 3.5);
+    set_g(150 * 3.0);
+    set_b(200 * 3.5);
     pwmEnableChannel(&PWMD2, 1, PWM_PERCENTAGE_TO_WIDTH(&PWMD2, 200));
     pwmEnableChannel(&PWMD2, 2, PWM_PERCENTAGE_TO_WIDTH(&PWMD2, 150));
     pwmEnableChannel(&PWMD2, 0, PWM_PERCENTAGE_TO_WIDTH(&PWMD2, 200));

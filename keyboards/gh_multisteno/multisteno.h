@@ -31,6 +31,10 @@ static const uint8_t rgb_channel[3] = {
     0
 };
 
+#ifndef BRIGHTNESS
+#define BRIGHTNESS 1.0
+#endif
+
 void set_r(uint16_t r);
 void set_g(uint16_t g);
 void set_b(uint16_t b);
