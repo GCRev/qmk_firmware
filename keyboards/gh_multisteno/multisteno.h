@@ -2,7 +2,6 @@
 
 #include <hal.h>
 #include <usb_device_state.h>
-#include "keymap_plover_hid.h"
 
 static const PWMConfig TIM1_PWM_CONFIG = {
     .frequency = 72000000U,
