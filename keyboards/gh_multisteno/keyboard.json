@@ -17,7 +17,7 @@
         "rows": ["A15", "B4", "B7", "B6", "B5"]
     },
     "processor": "STM32F103",
-    "url": "",
+    "url": "https://github.com/GCRev/qmk_firmware",
     "usb": {
         "device_version": "1.0.0",
         "pid": "0x6000",
