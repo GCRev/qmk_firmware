@@ -8,4 +8,7 @@ PLOVER_HID_ENABLE = yes
 
 COMBO_ENABLE = yes
 
+WS2812_DRIVER_REQUIRED = yes
+WS2812_DRIVER = pwm
+
 SRC += matrix.c multisteno.c

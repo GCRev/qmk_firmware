@@ -118,26 +118,26 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     switch(get_highest_layer(state)) {
     case _STENO:
         // poorple
-        set_r(2500 * 3.0);
+        set_r(180);
         set_g(0);
-        set_b(4000 * 3.5);
+        set_b(150);
         break;
     case _FUN:
         // yellow
-        set_r(4000 * 3.5);
-        set_g(1200 * 2.0);
+        set_r(180);
+        set_g(110);
         set_b(0);
         break;
     case _SYM:
         // cyan
         set_r(0);
-        set_g(1200 * 2.0);
-        set_b(4000 * 3.5);
+        set_g(110);
+        set_b(180);
         break;
     default:
-        set_r(200 * 3.5);
-        set_g(150 * 3.0);
-        set_b(200 * 3.5);
+        set_r(80);
+        set_g(80);
+        set_b(80);
         break;
     }
 
