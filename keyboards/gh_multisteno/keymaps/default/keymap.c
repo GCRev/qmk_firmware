@@ -5,13 +5,6 @@
 #include "multisteno.h"
 #include QMK_KEYBOARD_H
 
-enum Layer {
-    _BASE,
-    _STENO,
-    _FUN,
-    _SYM
-};
-
 enum custom_keycodes {
     STN_ESC = SAFE_RANGE,
     TO_STN,
@@ -115,32 +108,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 layer_state_t layer_state_set_user(layer_state_t state) {
-    switch(get_highest_layer(state)) {
-    case _STENO:
-        // poorple
-        set_r(2500);
-        set_g(0);
-        set_b(4000);
-        break;
-    case _FUN:
-        // yellow
-        set_r(4000);
-        set_g(1200);
-        set_b(0);
-        break;
-    case _SYM:
-        // cyan
-        set_r(0);
-        set_g(1200);
-        set_b(4000);
-        break;
-    default:
-        set_r(200);
-        set_g(150);
-        set_b(200);
-        break;
-    }
-
     return state;
 }
 

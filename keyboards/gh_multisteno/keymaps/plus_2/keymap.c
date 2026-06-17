@@ -5,17 +5,11 @@
 #include "multisteno.h"
 #include QMK_KEYBOARD_H
 
-enum Layer {
-    _BASE,
-    _STENO,
-    _FUN,
-    _SYM
-};
-
 enum custom_keycodes {
     STN_ESC = SAFE_RANGE,
     TO_STN,
-    MO_FUN
+    MO_FUN,
+    TOG_LED
 };
 
 // left-handed space combo
@@ -75,7 +69,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * ┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┐
      * │ F1│ F2│ F3│ F4│ F5│ F6│ F7│ F8│ F9│F10│F11│F12│
      * ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
-     * │   │   │ UP│   │   │   │   │DEL│INS│   │PRT│   │
+     * │   │   │ UP│   │   │   │   │DEL│INS│LED│PRT│   │
      * ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
      * │   │LFT│DWN│RGT│   │   │HOM│PGD│PGU│END│   │   │
      * ├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤
@@ -86,7 +80,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      */
     [_FUN] = LAYOUT(
         KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,
-        _______, _______, KC_UP,   _______, _______, _______, _______, KC_DEL,  KC_INS,  _______, KC_PSCR, _______,
+        _______, _______, KC_UP,   _______, _______, _______, _______, KC_DEL,  KC_INS,  TOG_LED, KC_PSCR, _______,
         _______, KC_LEFT, KC_DOWN, KC_RGHT, _______, _______, KC_HOME, KC_PGDN, KC_PGUP, KC_END,  _______, _______,
         _______, _______, KC_DEL,  KC_CAPS, _______, KC_BRK,  _______, _______, _______, _______, _______, _______,
                           _______, _______, _______, _______, _______, _______, _______, _______
@@ -115,32 +109,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 layer_state_t layer_state_set_user(layer_state_t state) {
-    switch(get_highest_layer(state)) {
-    case _STENO:
-        // poorple
-        set_r(180);
-        set_g(0);
-        set_b(150);
-        break;
-    case _FUN:
-        // yellow
-        set_r(180);
-        set_g(110);
-        set_b(0);
-        break;
-    case _SYM:
-        // cyan
-        set_r(0);
-        set_g(110);
-        set_b(180);
-        break;
-    default:
-        set_r(80);
-        set_g(80);
-        set_b(80);
-        break;
-    }
-
     return state;
 }
 
@@ -164,9 +132,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case TO_STN:
         if (record->event.pressed) {
             layer_move(_STENO);
-        } else {
-            // do nothing
-        }
+        } 
+        return false;
+    case TOG_LED:
+        if (record->event.pressed) {
+            toggle_led();
+        }        
         return false;
     default:
         return true;

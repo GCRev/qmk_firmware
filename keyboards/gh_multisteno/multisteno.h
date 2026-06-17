@@ -3,6 +3,13 @@
 #include <hal.h>
 #include <usb_device_state.h>
 
+enum Layer {
+    _BASE,
+    _STENO,
+    _FUN,
+    _SYM
+};
+
 static const PWMConfig TIM1_PWM_CONFIG = {
     .frequency = 72000000U,
     .period = 0xFFFF,
@@ -33,18 +40,10 @@ static const uint8_t rgb_channel[3] = {
     0
 };
 
-#ifndef BRIGHTNESS
-#define BRIGHTNESS 1.0
-#endif
-
-void set_r(uint8_t r);
-void set_g(uint8_t g);
-void set_b(uint8_t b);
-
-void set_r_at(int index, uint8_t r);
-void set_g_at(int index, uint8_t g);
-void set_b_at(int index, uint8_t b);
+#define DEFAULT_LED_BRIGHTNESS 60
 
 void default_led(void);
 
 void disable_led(void);
+
+void toggle_led(void);
