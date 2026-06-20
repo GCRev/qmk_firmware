@@ -62,6 +62,10 @@ void toggle_led() {
 // static const uint8_t led_scale[WS2812_LED_COUNT] = {255, 185, 115, 45, 45, 115, 185, 255};
 static const uint8_t led_scale[WS2812_LED_COUNT] = {255, 255, 255, 255, 255, 255, 255, 255};
 
+// shared with the indicator colors below so caps/numlock always match the layer they toggle
+static const uint8_t fun_color[3] = {140, 90, 0};
+static const uint8_t sym_color[3] = {0,   80, 150};
+
 static uint8_t scale_channel(uint8_t value, uint8_t scale) {
     return (uint16_t)value * scale / 255;
 }
@@ -72,15 +76,18 @@ bool led_step(void) {
     bool caps = (hid_leds >> 1) & 1;
     bool num  = (hid_leds >> 0) & 1;
 
+    uint8_t highest_layer = get_highest_layer(layer_state);
+    bool is_default_layer = (highest_layer == _BASE);
+
     uint8_t base_r = 0, base_g = 0, base_b = 0;
     if (!leds_disabled) {
-        switch (get_highest_layer(layer_state)) {
+        switch (highest_layer) {
         case _STENO:
             base_r = 150; base_g = 0;   base_b = 120; break;
         case _FUN:
-            base_r = 140; base_g = 90;  base_b = 0;   break;
+            base_r = fun_color[0]; base_g = fun_color[1]; base_b = fun_color[2]; break;
         case _SYM:
-            base_r = 0;   base_g = 80;  base_b = 150; break;
+            base_r = sym_color[0]; base_g = sym_color[1]; base_b = sym_color[2]; break;
         default:
             base_r = DEFAULT_LED_BRIGHTNESS;
             base_g = DEFAULT_LED_BRIGHTNESS;
@@ -93,8 +100,20 @@ bool led_step(void) {
         uint8_t tr = base_r, tg = base_g, tb = base_b;
 
         if (!leds_disabled) {
-            if (i == 0 && caps) { tr = 0; tg = 180; tb = 0; }
-            if (i == 7 && num)  { tr = 0; tg = 180; tb = 0; }
+            if (i == 0 && caps) {
+                if (is_default_layer) {
+                    tr = fun_color[0]; tg = fun_color[1]; tb = fun_color[2];
+                } else {
+                    tr = tg = tb = DEFAULT_LED_BRIGHTNESS;
+                }
+            }
+            if (i == 7 && num) {
+                if (is_default_layer) {
+                    tr = sym_color[0]; tg = sym_color[1]; tb = sym_color[2];
+                } else {
+                    tr = tg = tb = DEFAULT_LED_BRIGHTNESS;
+                }
+            }
         }
 
         uint8_t s = led_scale[i];
